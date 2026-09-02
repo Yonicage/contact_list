@@ -181,7 +181,7 @@ namespace Web_Contact_Information_V2.Server.DataAccess
             }
         }
 
-        public bool ResetContacts(List<Contact> contacts)           //static? addwith value problem in terms of value (x) Change with explicit SQL? !!!!!!!!!!!!!!!!!!!!!!
+        public bool ResetContacts(List<Contact> contacts)           
         {
             var statement =
               "DELETE FROM Contacts; " +
@@ -227,7 +227,7 @@ namespace Web_Contact_Information_V2.Server.DataAccess
             catch (Exception ex)
             {
                 Console.WriteLine($"Database operation failed: {ex.Message}");
-                return false;
+                throw ex;
 
 
             }

@@ -1,9 +1,5 @@
 @Web_Contact_Information_V2.Server_HostAddress = http://localhost:5224
 
-GET {{Web_Contact_Information_V2.Server_HostAddress}}/weatherforecast/
-Accept: application/json
-###^^Borrar
-
 ### GET ALL
 GET {{Web_Contact_Information_V2.Server_HostAddress}}/api/Contact
 Accept: application/json
@@ -65,7 +61,10 @@ Content-Type: application/json
   "notes": "Testing PUT"
 }
 
-### POST RESET + SEED DATA 
+### Reset
 POST {{Web_Contact_Information_V2.Server_HostAddress}}/api/Contact/reset
+Content-Type: application/json
+
+...
 
 

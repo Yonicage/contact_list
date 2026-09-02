@@ -156,8 +156,8 @@ namespace Web_Contact_Information_V2.Server.Controllers
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"Database operation failed: {ex.Message}");
-                return false;
+                Console.WriteLine($"Database operation failed: {ex}");
+                throw;
             }
         }
 
