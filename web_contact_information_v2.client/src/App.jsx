@@ -30,6 +30,9 @@ function App() {
         setLoggedIn(true);
         setError("");
     }
+
+
+
     function formatNumber(number) {
         if (!number) return "";
         
@@ -225,14 +228,25 @@ function App() {
     }
 
     if (loggedIn) {
-        return (
-            <div className="main-screen">
-                <div className="user-section">
-                    <p>Welcome {username}</p>
-                    <a href="#" onClick={handleExit}>Exit</a>
 
-                    <br></br>
+
+        return (
+            
+            
+            <div className="main-screen">
+                <div className="top-section">
+                    <div>
+                    <h3>myContacts | Lookup</h3>
+                    </div>
+                    <div className="user-section">
+                        <p>Welcome {username}</p>
+                        <a href="#" onClick={handleExit}>Exit</a>
+
+                        <br></br>
+                    </div>
+
                 </div>
+               
                 <div className="toolbar">
                     <div className="filter-section">
                         <p>Filter: </p>
@@ -260,7 +274,11 @@ function App() {
                     style={{ display: "none" }}
                     onChange={handleCSVImport}
                 />
-                <hr></hr>
+                <div className="results-header">
+                    <h5>Search Results</h5>
+                    <hr />
+                </div>
+               
                 {message && (
                     <div>
                         {message}
@@ -313,11 +331,12 @@ function App() {
 
         )
     }
+    //Entry Point of our Front End
 
-   
 
     return (
         <div>
+            <title>Login</title>
             <h1 id="tableLabel">Login</h1>
             <input
                 type="text"

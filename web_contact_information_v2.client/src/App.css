@@ -8,11 +8,13 @@
 th, td {
     padding-left: 1rem;
     padding-right: 1rem;
+    color:black;
 }
 
 .contact-table {
     width: 100%;
     border-collapse: collapse;
+
 }
 
 .main-screen {
@@ -20,6 +22,7 @@ th, td {
     width: 100%;
     height: 100vh;
     overflow: auto;
+    background-color:white;
 }
 
 .user-section {
@@ -27,6 +30,11 @@ th, td {
     display: flex;
     flex-direction: column;
     align-items: flex-end;
+    padding:20px;
+}
+
+.top-section {
+    background-color: darkslateblue
 }
 
 .toolbar {
@@ -40,6 +48,9 @@ th, td {
     display: flex;
     align-items: center;
     gap: 10px;
+    color:black;
+    
+    
 }
 
 .action-section {
@@ -47,6 +58,17 @@ th, td {
     align-items: center;
     gap: 20px;
 }
+
+.results-header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    color:mediumblue;
+}
+
+    .results-header hr {
+        flex: 1;
+    }
 
 
 
