@@ -8,13 +8,14 @@
 th, td {
     padding-left: 1rem;
     padding-right: 1rem;
-    color:gray;
+    color:black;
+    
 }
 
 .contact-table {
     width: 100%;
     border-collapse: collapse;
-
+    color: gray;
 }
 
 .main-screen {

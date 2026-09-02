@@ -132,7 +132,11 @@ function ContactScreen({ contact, username, onUpdated, onCancel }) {
             windowColor="-500"
             windowBorderRadius="10g"
             >
-                <h2>Contact Information</h2>
+                <div>
+
+                </div>
+                <h2>CONTACT</h2>
+
 
                 <label>Name: </label>
                 <input
