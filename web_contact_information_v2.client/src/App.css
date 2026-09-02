@@ -91,6 +91,29 @@ th, td {
         flex: 1;
     }
 
+.contact-window {
+    position: fixed;
+    top:25%;
+    left:25%;
+    background-color:white;
+}
+
+.contact-header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 20px;
+    background-color:mediumpurple;
+}
+
+.input-section {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 20px;
+}
+
+
 
 
 .input-error {

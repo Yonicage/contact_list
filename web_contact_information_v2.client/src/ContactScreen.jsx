@@ -129,33 +129,43 @@ function ContactScreen({ contact, username, onUpdated, onCancel }) {
             <WindowComponent
             w={800}
             h={500}
-            windowColor="-500"
+           
             windowBorderRadius="10g"
             >
-                <div>
-
+                <div className="contact-header">
+                    <h2>CONTACT</h2>
+                    <a href="#" onClick={handleContact}>{isEditing ? "Update" : "Add"}</a>
+                    <a href="#" onClick={onCancel}>Cancel</a>
                 </div>
-                <h2>CONTACT</h2>
+                
 
+                <div className="input-section">
+                    <label>Name: </label>
+                    <input
+                        value={name}
+                        onChange={(e) => setName(e.target.value)}
+                        className={fieldErrors.name ? "input-error" : ""}
+                    />
+                </div>
+                <div className="input-section">
+                    <label>Phone: </label>
+                    <input
+                        value={phone}
+                        onChange={(e) => setPhone(e.target.value)}
+                        className={fieldErrors.phone ? "input-error" : ""}
+                    />
 
-                <label>Name: </label>
-                <input
-                    value={name}
-                    onChange={(e) => setName(e.target.value)}
-                    className={fieldErrors.name ? "input-error" : ""}
-                />
-                <label>Phone: </label>
-                <input
-                    value={phone}
-                    onChange={(e) => setPhone(e.target.value)}
-                    className={fieldErrors.phone ? "input-error" : ""}
-                />
+                <div className="input-section">
                 <label>Fax: </label>
                 <input
                     value={fax}
                     onChange={(e) => setFax(e.target.value)}
                     className={fieldErrors.fax ? "input-error" : ""}
-                />
+                        />
+                
+                    </div>
+
+                <div className="input-section">
                 <label>Email: </label>
                 <input
                     value={email}
@@ -166,12 +176,9 @@ function ContactScreen({ contact, username, onUpdated, onCancel }) {
                 <input
                     value={notes}
                     onChange={(e) => setNotes(e.target.value)}
-                />
+                        />
+                </div>
               
-
-                <button onClick={handleContact}>{isEditing ? "Update" : "Add"}</button>
-                <button onClick={onCancel}>Cancel</button>
-
             </WindowComponent>
 
         </div>
