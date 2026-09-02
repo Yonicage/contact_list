@@ -155,6 +155,8 @@ function ContactScreen({ contact, username, onUpdated, onCancel }) {
                         className={fieldErrors.phone ? "input-error" : ""}
                     />
 
+                </div>
+
                 <div className="input-section">
                 <label>Fax: </label>
                 <input
