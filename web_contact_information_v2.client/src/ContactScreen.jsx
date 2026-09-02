@@ -127,20 +127,22 @@ function ContactScreen({ contact, username, onUpdated, onCancel }) {
     return (
         <div style={{ position: "fixed", top: "25%", left: "25%"}}>
             <WindowComponent
-            w={800}
-            h={500}
+                w={800}
+                h={500}
+                windowColor="white-900"
            
             windowBorderRadius="10g"
             >
                 <div className="contact-header">
                     <h2>CONTACT</h2>
                     <a href="#" onClick={handleContact}>{isEditing ? "Update" : "Add"}</a>
+                    <p>|</p>
                     <a href="#" onClick={onCancel}>Cancel</a>
                 </div>
                 
 
                 <div className="input-section">
-                    <label>Name: </label>
+                    <label>Name*: </label>
                     <input
                         value={name}
                         onChange={(e) => setName(e.target.value)}
@@ -148,7 +150,7 @@ function ContactScreen({ contact, username, onUpdated, onCancel }) {
                     />
                 </div>
                 <div className="input-section">
-                    <label>Phone: </label>
+                    <label>Phone*: </label>
                     <input
                         value={phone}
                         onChange={(e) => setPhone(e.target.value)}
