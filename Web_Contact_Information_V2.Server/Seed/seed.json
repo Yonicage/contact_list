@@ -1,0 +1,102 @@
+[
+  {
+    "ContactID": 1,
+    "Name": "Sunrise Family Pharmacy",
+    "Phone": "4075551001",
+    "Fax": "4075551002",
+    "eMail": "orders@sunrisepharmacy.com",
+    "Notes": "Preferred local pharmacy. Accepts electronic refill requests and prior authorization documents.",
+    "LastUpdateDate": "2026-07-17T09:15:23",
+    "LastUpdateUserName": "mfigueroa"
+  },
+  {
+    "ContactID": 2,
+    "Name": "Orlando Diagnostic Imaging",
+    "Phone": "4075552001",
+    "Fax": "4075552002",
+    "eMail": "referrals@orlandodiagnostics.com",
+    "Notes": "MRI, CT, Ultrasound, and X-Ray services. Same-day appointments available for urgent cases.",
+    "LastUpdateDate": "2026-07-15T14:42:10",
+    "LastUpdateUserName": "jsmith"
+  },
+  {
+    "ContactID": 3,
+    "Name": "Central Medical Laboratory",
+    "Phone": "4075553001",
+    "Fax": "4075553002",
+    "eMail": "results@centrallab.com",
+    "Notes": "Routine blood work and pathology services. Electronic result delivery enabled.",
+    "LastUpdateDate": "2026-07-10T11:08:54",
+    "LastUpdateUserName": "agarcia"
+  },
+  {
+    "ContactID": 4,
+    "Name": "Dr. Emily Carter",
+    "Phone": "3215554100",
+    "Fax": "3215554101",
+    "eMail": "ecarter@cardiologyassoc.com",
+    "Notes": "Cardiology specialist. Preferred referral provider for cardiac evaluations.",
+    "LastUpdateDate": "2026-07-08T08:20:45",
+    "LastUpdateUserName": "mfigueroa"
+  },
+  {
+    "ContactID": 5,
+    "Name": "Lakeview Home Health",
+    "Phone": "4075555200",
+    "Fax": "4075555201",
+    "eMail": "intake@lakeviewhh.com",
+    "Notes": "Provides skilled nursing, physical therapy, and home health aide services.",
+    "LastUpdateDate": "2026-07-12T16:35:12",
+    "LastUpdateUserName": "jrodriguez"
+  },
+  {
+    "ContactID": 6,
+    "Name": "ABC Medical Supplies",
+    "Phone": "4075556300",
+    "Fax": "4075556301",
+    "eMail": "sales@abcmedsupplies.com",
+    "Notes": "Durable medical equipment supplier. Delivers walkers, wheelchairs, and CPAP equipment.",
+    "LastUpdateDate": "2026-07-16T13:55:41",
+    "LastUpdateUserName": "mfigueroa"
+  },
+  {
+    "ContactID": 7,
+    "Name": "Community Physical Therapy",
+    "Phone": "4075557400",
+    "Fax": "4075557401",
+    "eMail": "appointments@communitypt.com",
+    "Notes": "Accepts referrals for orthopedic and post-surgical rehabilitation.",
+    "LastUpdateDate": "2026-07-11T10:14:07",
+    "LastUpdateUserName": "agarcia"
+  },
+  {
+    "ContactID": 8,
+    "Name": "Northside Hospital",
+    "Phone": "4075558500",
+    "Fax": "4075558501",
+    "eMail": "medicalrecords@northsidehospital.org",
+    "Notes": "Main hospital contact for admissions, discharge summaries, and medical records requests.",
+    "LastUpdateDate": "2026-07-17T07:50:30",
+    "LastUpdateUserName": "jsmith"
+  },
+  {
+    "ContactID": 9,
+    "Name": "Healthy Life Nutrition",
+    "Phone": "3215559600",
+    "Fax": "3215559601",
+    "eMail": "consults@healthylifenutrition.com",
+    "Notes": "Registered dietitian services for diabetes, weight management, and cardiovascular nutrition.",
+    "LastUpdateDate": "2026-07-09T15:22:59",
+    "LastUpdateUserName": "jrodriguez"
+  },
+  {
+    "ContactID": 10,
+    "Name": "Priority Behavioral Health",
+    "Phone": "4075550700",
+    "Fax": "4075550701",
+    "eMail": "referrals@prioritybh.com",
+    "Notes": "Behavioral health and psychiatry referrals. Telehealth appointments available.",
+    "LastUpdateDate": "2026-07-14T12:48:16",
+    "LastUpdateUserName": "mfigueroa"
+  }
+]

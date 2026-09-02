@@ -1,0 +1,71 @@
+@Web_Contact_Information_V2.Server_HostAddress = http://localhost:5224
+
+GET {{Web_Contact_Information_V2.Server_HostAddress}}/weatherforecast/
+Accept: application/json
+###^^Borrar
+
+### GET ALL
+GET {{Web_Contact_Information_V2.Server_HostAddress}}/api/Contact
+Accept: application/json
+
+### GET Filter = Medical
+GET {{Web_Contact_Information_V2.Server_HostAddress}}/api/Contact?filter=Medical
+Accept: application/json
+
+### POST Create
+POST {{Web_Contact_Information_V2.Server_HostAddress}}/api/Contact
+Content-Type: application/json
+
+{
+  "name": "Test Contact",
+  "phone": "7875557234",
+  "fax": null,
+  "eMail": "test@example.com",
+  "notes": "Testing POST"
+}
+
+### POST Create CSV
+POST {{Web_Contact_Information_V2.Server_HostAddress}}/api/Contact/import
+Content-Type: application/json
+
+{
+  "contacts": [
+    {
+      "name": "Sunrise Family Pharmacy",
+      "phone": "4075559999",
+      "fax": "4075551002",
+      "eMail": "refills@sunrisepharmacy.com",
+      "notes": "UPDATED TEST",
+      "lastUpdateDate": "2026-07-18T12:00:00"
+    }
+  ],
+  "user": "TestUser"
+}
+
+### Testing with null fields
+POST {{Web_Contact_Information_V2.Server_HostAddress}}/api/Contact
+Content-Type: application/json
+
+{
+    "name": "",
+    "phone": ""
+}
+
+
+###
+PUT {{Web_Contact_Information_V2.Server_HostAddress}}/api/Contact
+Content-Type: application/json
+
+{
+  "contactId": 1,
+  "name": "Updated Test Contact",
+  "phone": "7875559999",
+  "fax": "78798928",
+  "eMail": "updated@example.com",
+  "notes": "Testing PUT"
+}
+
+### POST RESET + SEED DATA 
+POST {{Web_Contact_Information_V2.Server_HostAddress}}/api/Contact/reset
+
+

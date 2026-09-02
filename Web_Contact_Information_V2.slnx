@@ -1,0 +1,7 @@
+<Solution>
+  <Project Path="web_contact_information_v2.client/web_contact_information_v2.client.esproj">
+    <Build />
+    <Deploy />
+  </Project>
+  <Project Path="Web_Contact_Information_V2.Server/Web_Contact_Information_V2.Server.csproj" />
+</Solution>
