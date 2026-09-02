@@ -1,6 +1,6 @@
 using Web_Contact_Information_V2.Server.DataAccess;
 
-var builder = WebApplication.CreateBuilder(args); //Debuging backend https://localhost:7233/api/Contact
+var builder = WebApplication.CreateBuilder(args); 
 
 // Add services to the container.
 
@@ -13,7 +13,7 @@ builder.Services.AddCors(options =>
 {
     options.AddPolicy("AllowReact", policy =>
     {
-        policy.WithOrigins("https://localhost:53394")
+        policy.WithOrigins("https://lemon-river-02550df10.3.azurestaticapps.net/") //Debuging backend https://localhost:7233/api/Contact
               .AllowAnyHeader()
               .AllowAnyMethod();
     });
