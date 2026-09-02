@@ -13,7 +13,7 @@ builder.Services.AddCors(options =>
 {
     options.AddPolicy("AllowReact", policy =>
     {
-        policy.WithOrigins("https://lemon-river-02550df10.3.azurestaticapps.net/") //Debuging backend https://localhost:7233/api/Contact
+        policy.WithOrigins("https://lemon-river-02550df10.3.azurestaticapps.net") //Debuging backend https://localhost:7233/api/Contact
               .AllowAnyHeader()
               .AllowAnyMethod();
     });
@@ -21,7 +21,7 @@ builder.Services.AddCors(options =>
 
 var app = builder.Build();
 
-app.UseCors("AllowReact");
+
 
 app.UseDefaultFiles();
 app.MapStaticAssets();
@@ -33,6 +33,8 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+
+app.UseCors("AllowReact");
 
 app.UseAuthorization();
 
