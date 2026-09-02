@@ -23,7 +23,7 @@ namespace Web_Contact_Information_V2.Server.Controllers
         }
 
         [HttpGet]
-        public ActionResult<List<Contact>> Get(string? filter) //this method can be anything  ActionResult gives collection list, 200, 404, 400 error ,Ienumerable only shows collection 
+        public ActionResult<List<Contact>> Get(string? filter) 
         {
 
             try
@@ -42,9 +42,11 @@ namespace Web_Contact_Information_V2.Server.Controllers
                 }
 
             }
-            catch (SqlException)
+               catch (Exception ex)
             {
-                return StatusCode(500, "A database error occurred.");
+                Console.WriteLine("DATABASE ERROR:");
+                Console.WriteLine(ex.Message);
+                return false;
             }
         }
         [HttpPost]
