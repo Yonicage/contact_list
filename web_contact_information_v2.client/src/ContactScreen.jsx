@@ -176,7 +176,7 @@ function ContactScreen({ contact, username, onUpdated, onCancel }) {
                     onChange={(e) => setEmail(e.target.value)}
                         className={fieldErrors.email ? "input-error" : ""}
                     />
-                
+                </div>
                 <div className="input-section">
                 <label>Notes: </label>
                 <input

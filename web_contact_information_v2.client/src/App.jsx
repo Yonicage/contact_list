@@ -334,17 +334,22 @@ function App() {
 
 
     return (
-        <div>
-            <title>Login</title>
-            <h1 id="tableLabel">Login</h1>
-            <input
-                type="text"
-                placeholder="Username"
-                value={username}
-                onChange={(e) => setUsername(e.target.value)}
-            />
-            <button onClick={handleLogin}>ENTER</button>
-            <p>{error}</p>
+        <div className="login-screen">
+            <div className="login-box">
+
+                <title>Login</title>
+                <p>myContacts v.1.1</p>
+                <label>Username</label>
+                <input
+                    type="text"
+                    value={username}
+                    onChange={(e) => setUsername(e.target.value)}
+                />
+                <button onClick={handleLogin}>ENTER</button>
+                <p>{error}</p>
+
+            </div>
+          
             
         </div>
     );
