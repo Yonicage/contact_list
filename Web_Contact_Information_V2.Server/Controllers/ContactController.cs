@@ -42,12 +42,10 @@ namespace Web_Contact_Information_V2.Server.Controllers
                 }
 
             }
-               catch (Exception ex)
-            {
-                Console.WriteLine("DATABASE ERROR:");
-                Console.WriteLine(ex.Message);
-                return false;
-            }
+              catch (Exception ex)
+             {
+                  return StatusCode(500, ex.Message);
+             }
         }
         [HttpPost]
         public ActionResult<bool> Post([FromBody] CreateContactRequest request) //model binding
