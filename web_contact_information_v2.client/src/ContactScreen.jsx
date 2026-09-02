@@ -129,7 +129,7 @@ function ContactScreen({ contact, username, onUpdated, onCancel }) {
             <WindowComponent
                 w={800}
                 h={500}
-                windowColor="white"
+                windowColor="gray-50"
            
             windowBorderRadius="10g"
             >
