@@ -241,8 +241,7 @@ function App() {
                     <div className="user-section">
                         <p>Welcome {username}</p>
                         <a href="#" onClick={handleExit}>Exit</a>
-
-                        <br></br>
+ 
                     </div>
 
                 </div>
@@ -255,7 +254,7 @@ function App() {
                             value={filter}
                             onChange={(e) => setFilter(e.target.value)}
                         />
-                        <a href="#" onClick={getContacts}>Search</a>
+                        <button onClick={getContacts}>Search</button>
                     </div>
                     <div className="action-section">
                         <a href="#" onClick={exportXML}>Export</a>
@@ -292,7 +291,7 @@ function App() {
                             <th>Name</th>
                             <th>Phone</th>
                             <th>Fax</th>
-                            <th>Email</th>
+                            <th>eMail</th>
                             <th>Last Update</th>
                         </tr>
                     </thead>
@@ -300,7 +299,7 @@ function App() {
                         {contacts.map(contact => (
                             <tr key={contact.contactID}>
                                 <td>
-                                    <button onClick={() => handleView(contact)}>View</button>
+                                    <a href="#" onClick={() => handleView(contact)}>View</a>
                                 </td>
                                 <td>{contact.name}</td>
                                 <td>{formatNumber(contact.phone)}</td>
