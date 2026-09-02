@@ -178,11 +178,11 @@ function ContactScreen({ contact, username, onUpdated, onCancel }) {
                     />
                 </div>
                 <div className="input-section">
-                <label>Notes: </label>
-                <input
-                    value={notes}
-                    onChange={(e) => setNotes(e.target.value)}
-                        />
+                    <label>Notes: </label>
+                    <textarea
+                        value={notes}
+                        onChange={(e) => setNotes(e.target.value)}
+                    />
                 </div>
               
             </WindowComponent>
