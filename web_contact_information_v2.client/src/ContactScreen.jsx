@@ -129,7 +129,7 @@ function ContactScreen({ contact, username, onUpdated, onCancel }) {
             <WindowComponent
                 w={800}
                 h={500}
-                windowColor="white-900"
+                windowColor="white"
            
             windowBorderRadius="10g"
             >
@@ -174,8 +174,10 @@ function ContactScreen({ contact, username, onUpdated, onCancel }) {
                 <input
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
-                    className={fieldErrors.email ? "input-error" : ""}
-                />
+                        className={fieldErrors.email ? "input-error" : ""}
+                    />
+                
+                <div className="input-section">
                 <label>Notes: </label>
                 <input
                     value={notes}
