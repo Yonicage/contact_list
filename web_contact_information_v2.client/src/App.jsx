@@ -12,7 +12,7 @@ function App() {
     const [message, setMessage] = useState("");
 
     useEffect(() => {
-        fetch("https://localhost:7233/api/Contact")
+        fetch(`${import.meta.env.VITE_API_URL}/api/Contact`)
             .then(response => response.json())
             .then(data => {
                 setContacts(data);
@@ -58,7 +58,7 @@ function App() {
     }
 
     function getContacts() {
-        fetch(`https://localhost:7233/api/Contact?filter=${encodeURIComponent(filter)}`)
+        fetch(`${import.meta.env.VITE_API_URL}/api/Contact?filter=${encodeURIComponent(filter)}`)
             .then(response => response.json())
             .then(data => {
                 setContacts(data);
@@ -156,7 +156,7 @@ function App() {
                 contacts: importedContacts,
                 user: username
             };
-            fetch("https://localhost:7233/api/Contact/import", {
+            fetch(`${import.meta.env.VITE_API_URL}/api/Contact/import`, {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json"

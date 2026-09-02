@@ -27,7 +27,7 @@ function ContactScreen({ contact, username, onUpdated, onCancel }) {
                 notes: notes,
                 user: username
             };
-            const response = await fetch("https://localhost:7233/api/Contact", {
+            const response = await fetch(`${import.meta.env.VITE_API_URL}/api/Contact`, {
                 method: "PUT",
                 headers: {
                     "Content-Type": "application/json"
@@ -50,7 +50,7 @@ function ContactScreen({ contact, username, onUpdated, onCancel }) {
                 notes: notes,
                 user: username
             };
-            const response = await fetch("https://localhost:7233/api/Contact", {
+            const response = await fetch(`${import.meta.env.VITE_API_URL}/api/Contact`, {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json"
