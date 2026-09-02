@@ -227,18 +227,32 @@ function App() {
     if (loggedIn) {
         return (
             <div className="main-screen">
-                <button onClick={handleExit}>Exit</button>
-                <h1>Contact List</h1>
-                <p>Filter:</p>
-                <input
-                    type="text"
-                    value={filter}
-                    onChange={(e) => setFilter(e.target.value)}
-                />
-                <button onClick={getContacts}>Search</button>
-                <button onClick={() => setSelectedContact({})} >+ Add New</button>
-                <button onClick={exportXML}>Export</button>
-                <button onClick={() => document.getElementById("csvFileInput").click()}>Import</button>
+                <div className="user-section">
+                    <p>Welcome {username}</p>
+                    <a href="#" onClick={handleExit}>Exit</a>
+
+                    <br></br>
+                </div>
+                <div className="toolbar">
+                    <div className="filter-section">
+                        <p>Filter: </p>
+                        <input
+                            type="text"
+                            value={filter}
+                            onChange={(e) => setFilter(e.target.value)}
+                        />
+                        <a href="#" onClick={getContacts}>Search</a>
+                    </div>
+                    <div className="action-section">
+                        <a href="#" onClick={exportXML}>Export</a>
+                        <a href="#" onClick={() => document.getElementById("csvFileInput").click()}>Import</a>
+                        <a href="#" onClick={() => setSelectedContact({})}>+ Add New</a>
+
+                    </div>
+
+
+                </div>   
+             
                 <input
                     type="file"
                     accept=".csv"
