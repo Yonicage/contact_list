@@ -11,6 +11,7 @@ function App() {
     const [selectedContact, setSelectedContact] = useState(null);
     const [message, setMessage] = useState("");
 
+
     useEffect(() => {
         fetch(`${import.meta.env.VITE_API_URL}/api/Contact`)
             .then(response => response.json())
@@ -279,7 +280,7 @@ function App() {
                 </div>
                
                 {message && (
-                    <div>
+                    <div className="action-message">
                         {message}
                     </div>
                 )}
@@ -321,6 +322,9 @@ function App() {
                                     ? "Contact added successfully"
                                     : "Contact updated successfully"
                             );
+                            setTimeout(() => {
+                                setMessage("");
+                            }, 5000);
                         }}
                         onCancel={() => setSelectedContact(null)}
                       

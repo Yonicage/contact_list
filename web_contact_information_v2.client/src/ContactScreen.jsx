@@ -37,9 +37,10 @@ function ContactScreen({ contact, username, onUpdated, onCancel }) {
 
             if (response.ok) {
                 onUpdated("update");
+                onCancel()
             } else {
                 const error = await response.text();
-                console.log("PUT error: ", error)
+                alert("Could not edit contact: ", {error})
             }
         } else {
             const newContact = {
@@ -61,9 +62,10 @@ function ContactScreen({ contact, username, onUpdated, onCancel }) {
           
             if (response.ok) {
                 onUpdated("add");
+                onCancel()
             } else {
                 const error = await response.text();
-                console.log("POST error: ",error)
+                alert("Could not edit contact: ", {error})
             }
         }
        

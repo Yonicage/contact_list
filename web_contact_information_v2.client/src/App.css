@@ -48,11 +48,11 @@
     color:darkblue;
 }
 
-    .login-box input {
-        background-color: white;
-        color: black;
+ .login-box input {
+    background-color: white;
+    color: black;
         
-    }
+}
 
 
 th, td {
@@ -121,6 +121,10 @@ th, td {
     padding:20px;
     
     
+}
+
+.action-message{
+    color:green;
 }
 
 .action-section {
