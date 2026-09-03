@@ -173,6 +173,8 @@ th, td {
     min-height: 120px;
     resize: vertical;
     box-sizing: border-box;
+    background-color:white;
+    color:black;
     }
 
  .input-section input {
@@ -181,8 +183,6 @@ th, td {
     background-color:white;
     color:black;
     }
-
-
 
 .input-error {
     border: 2px solid red;

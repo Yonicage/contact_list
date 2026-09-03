@@ -130,6 +130,8 @@ function ContactScreen({ contact, username, onUpdated, onCancel }) {
                 w={800}
                 h={500}
                 windowColor="gray-50"
+                windowBorder={2}
+                windowBorderColor="red"
            
             windowBorderRadius="10g"
             >
