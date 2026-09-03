@@ -240,7 +240,7 @@ function App() {
                     </div>
                     <div className="user-section">
                         <p>Welcome {username}</p>
-                        <a href="#" onClick={handleExit}>Exit</a>
+                        <a href="#" onClick={handleExit}>EXIT</a>
  
                     </div>
 

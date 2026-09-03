@@ -157,6 +157,13 @@ th, td {
     background-color:mediumpurple;
 }
 
+.contact-header a  {
+    align-self:flex-end;
+}
+.contact-header p {
+    align-self: flex-end;
+}
+
 .input-section {
     display: flex;
     align-items: center;
