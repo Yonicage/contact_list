@@ -41,24 +41,27 @@ function App() {
     }
 
     function formatDate(date) {
-        const d = new Date(date);
+        const d = new Date(date)
 
-        const parts = new Intl.DateTimeFormat("en-US", {
-            timeZone: "America/Puerto_Rico",
-            day: "2-digit",
-            month: "2-digit",
-            year: "numeric",
-            hour: "2-digit",
-            minute: "2-digit",
-            hour12: true
-        }).formatToParts(d);
+        // Convert UTC to Puerto Rico time
+        d.setHours(d.getHours() - 4);
 
-        const values = {};
-        parts.forEach(part => {
-            values[part.type] = part.value;
-        });
+        const day = String(d.getDate()).padStart(2, "0");
+        const month = String(d.getMonth() + 1).padStart(2, "0")
+        const year = d.getFullYear();
 
-        return `${values.day}/${values.month}/${values.year} ${values.hour}:${values.minute} ${values.dayPeriod}`;
+        let hours = d.getHours();
+        const minutes = String(d.getMinutes()).padStart(2, "0");
+
+        const period = hours >= 12 ? "PM" : "AM";
+
+        hours = hours % 12; //handling military hour
+        if (hours === 0) hours = 12;
+
+        hours = String(hours).padStart(2, "0");
+
+        return `${day}/${month}/${year} ${hours}:${minutes} ${period}`
+
     }
 
     function getContacts() {
