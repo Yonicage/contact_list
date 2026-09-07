@@ -178,7 +178,7 @@ function App() {
                     return response.json();
                 })
                 .then(data => {
-                    alert("Contacts imported successfully: ",data);
+                    alert("Contacts imported successfully: ", data);
                     getContacts();
                 })
                 .catch(error => {
@@ -337,8 +337,8 @@ function App() {
 
         )
     }
-    //Entry Point of our Front End
 
+    //Entry Point of our Front End
 
     return (
         <div className="login-screen">

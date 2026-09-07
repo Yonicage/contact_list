@@ -1,26 +1,27 @@
 using Web_Contact_Information_V2.Server.DataAccess;
 
-var builder = WebApplication.CreateBuilder(args); 
+var builder = WebApplication.CreateBuilder(args); //Creates application builder and loads configuration services
 
 // Add services to the container.
 
-builder.Services.AddControllers();
-builder.Services.AddScoped<ContactDA>();
+builder.Services.AddControllers(); //Register controllers 
+builder.Services.AddScoped<ContactDA>(); //Create a ContactDA instance and provide it to classes that request it.
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
 builder.Services.AddOpenApi();
 
+// Configure CORS to allow the React frontend hosted on Azure
+// to make HTTP requests to this API.
 builder.Services.AddCors(options =>
 {
     options.AddPolicy("AllowReact", policy =>
     {
-        policy.WithOrigins("https://lemon-river-02550df10.3.azurestaticapps.net") //Debuging backend https://localhost:7233/api/Contact
+        policy.WithOrigins("https://lemon-river-02550df10.3.azurestaticapps.net") 
               .AllowAnyHeader()
               .AllowAnyMethod();
     });
 });
 
 var app = builder.Build();
-
 
 
 app.UseDefaultFiles();

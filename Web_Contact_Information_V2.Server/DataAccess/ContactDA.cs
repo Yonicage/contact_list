@@ -1,4 +1,11 @@
-﻿using Microsoft.Data.SqlClient;
+﻿/*
+ * File: ContactsDA.cs
+ * Author: Yoniel Ruiz Alfaro
+ * Date: 09/02/2026
+ * Purpose: This class handles the data access operations for contacts.
+ */
+
+using Microsoft.Data.SqlClient;
 using System.Data;
 using Web_Contact_Information_V2.Server.DTO;
 using Web_Contact_Information_V2.Server.Model;
@@ -6,20 +13,35 @@ using Web_Contact_Information_V2.Server.Model;
 namespace Web_Contact_Information_V2.Server.DataAccess
 {
     /// <summary>
-    /// ContactDA: a class whose responsibility is to access and manage data.
+    /// ContactDA: a class whose responsibility is to handle data 
+    /// access operations for contacts. This class is responsible 
+    /// for communicating directly with the SQL server.
     /// </summary>
     public class ContactDA
     {
-
+        /// <summary>
+        /// Stores the database connection string.
+        /// </summary>
         private readonly string? _connectionString;
 
+        /// <summary>
+        /// A class that provides data access for a contact. When created, it gets the connect
+        /// tion string from the configuration settings.
+        /// </summary>
+        /// <param name="configuration">The configuration settings of the project.</param>
         public ContactDA(IConfiguration configuration)
         {
-            _connectionString = configuration.GetConnectionString("DefaultConnection"); //OJO string? puede ser null //do we need this, part of the dependency Injection?
+            _connectionString = configuration.GetConnectionString("DefaultConnection");
         }
+
+        /// <summary>
+        /// A method that provides all of the contacts present in the database.
+        /// </summary>
+        /// <returns>A list of contacts.</returns>
         public List<Contact> GetContacts()
         {
             var contacts = new List<Contact>();
+
             var statement =
                 "SELECT ContactID, Name, Phone, Fax, eMail, Notes, LastUpdateDate, LastUpdateUserName " +
                 "FROM Contacts";
@@ -44,9 +66,17 @@ namespace Web_Contact_Information_V2.Server.DataAccess
             return contacts;
 
         }
-        public List<Contact> FilterGetContact(string contactNameIn)
+
+        /// <summary>
+        /// A method that provides all of the contacts in the database
+        /// that partially or exactly match the provided name filter.
+        /// </summary>
+        /// <param name="nameFilter">The given filter to be used.</param>
+        /// <returns>A filtered contact list.</returns>
+        public List<Contact> FilterGetContact(string nameFilter)
         {
             var contacts = new List<Contact>();
+
             var statement =
                  "SELECT ContactID, Name, Phone, Fax, eMail, Notes, LastUpdateDate, LastUpdateUserName " +
                  "FROM Contacts " +
@@ -54,7 +84,7 @@ namespace Web_Contact_Information_V2.Server.DataAccess
             using var connection = new SqlConnection(_connectionString);
             using var command = new SqlCommand(statement, connection);
 
-            command.Parameters.AddWithValue("@Name", "%" + contactNameIn + "%");
+            command.Parameters.AddWithValue("@Name", "%" + nameFilter + "%"); //%: zero or more characters
             connection.Open();
             using var reader = command.ExecuteReader(CommandBehavior.CloseConnection);
 
@@ -68,11 +98,18 @@ namespace Web_Contact_Information_V2.Server.DataAccess
                 string? notes = reader["Notes"].ToString();
                 var lastUpdateDate = (DateTime)reader["LastUpdateDate"];
                 var lastUpdateUserName = reader["LastUpdateUserName"].ToString()!;
-                contacts.Add(new Contact(contactID, name, phone, fax, eMail, notes, lastUpdateDate, lastUpdateUserName)); ///
+                contacts.Add(new Contact(contactID, name, phone, fax, eMail, notes, lastUpdateDate, lastUpdateUserName));
             }
             return contacts;
         }
-        public bool AddContact(CreateContactRequest request, string username)           // addwith value problem in terms of value (x) Change with explicit SQL? !!!!!!!!!!!!!!!!!!!!!!
+
+        /// <summary>
+        /// Adds a new contact to the contacts table.
+        /// </summary>
+        /// <param name="request">A create contact request, contains all values of the new contact.</param>
+        /// <param name="username">The username of the user that created the request.</param>
+        /// <returns>True if it was inserted into the database; otherwise, false.</returns>
+        public bool AddContact(CreateContactRequest request)
         {
             var statement =
                 "INSERT INTO Contacts(Name, Phone, Fax, eMail, Notes, LastUpdateUserName) " +
@@ -93,6 +130,11 @@ namespace Web_Contact_Information_V2.Server.DataAccess
             return rowCount > 0;
         }
 
+        /// <summary>
+        /// Searches for a contact using its exact name and returns its contact Id.
+        /// </summary>
+        /// <param name="name">The contact name to be used to search for.</param>
+        /// <returns>The contact Id number if found. If not found, it returns null.</returns>
         public int? GetContactIDByName(string name)
         {
             var statement =
@@ -115,8 +157,16 @@ namespace Web_Contact_Information_V2.Server.DataAccess
             return (int)result;
         }
 
-        public bool ImportContacts(List<ImportContactRequest> requests, string username)
+        /// <summary>
+        /// Imports a collection of contacts into the database.
+        /// If a contact with the same name exists, its information is updated.
+        /// If it does not exist a new contact is created.
+        /// </summary>
+        /// <returns>True when the import completes successfully.</returns>
+        public bool ImportContacts(ImportContactsRequest request)
         {
+            var contacts = request.Contacts; // list of imported contacts
+            var username = request.User;     // Username of the user that requested the import 
 
             using var connection = new SqlConnection(_connectionString);
 
@@ -124,30 +174,25 @@ namespace Web_Contact_Information_V2.Server.DataAccess
             {
                 connection.Open();
 
-
-                foreach (var request in requests)
+                foreach (var contact in contacts)
                 {
+                    var contactID = GetContactIDByName(contact.Name);
 
-                    var contactID = GetContactIDByName(request.Name);
-                    Console.WriteLine($"ContactID = {contactID}");
-                    var statement = "";
-
-
-                    if (contactID != null)
+                    if (contactID != null) //If the contact exists, update. Else, create a new one. 
                     {
-                        statement = "" +
+                        var statement =
                             "UPDATE Contacts " +
                             "SET Name = @Name, Phone = @Phone, Fax = @Fax, eMail = @eMail, Notes = @Notes, LastUpdateDate = @LastUpdateDate, LastUpdateUserName = @LastUpdateUserName " +
                             "WHERE ContactID = @ContactID";
                         using var command = new SqlCommand(statement, connection);
 
                         command.Parameters.AddWithValue("@ContactID", contactID);
-                        command.Parameters.AddWithValue("@Name", request.Name);
-                        command.Parameters.AddWithValue("@Phone", request.Phone);
-                        command.Parameters.AddWithValue("@Fax", (request.Fax == null) ? DBNull.Value : request.Fax);
-                        command.Parameters.AddWithValue("@eMail", (request.eMail == null) ? DBNull.Value : request.eMail);
-                        command.Parameters.AddWithValue("@Notes", (request.Notes == null) ? DBNull.Value : request.Notes);
-                        command.Parameters.AddWithValue("@LastUpdateDate", request.LastUpdateDate);
+                        command.Parameters.AddWithValue("@Name", contact.Name);
+                        command.Parameters.AddWithValue("@Phone", contact.Phone);
+                        command.Parameters.AddWithValue("@Fax", (contact.Fax == null) ? DBNull.Value : contact.Fax);
+                        command.Parameters.AddWithValue("@eMail", (contact.eMail == null) ? DBNull.Value : contact.eMail);
+                        command.Parameters.AddWithValue("@Notes", (contact.Notes == null) ? DBNull.Value : contact.Notes);
+                        command.Parameters.AddWithValue("@LastUpdateDate", contact.LastUpdateDate);
                         command.Parameters.AddWithValue("@LastUpdateUserName", username);
                         command.ExecuteNonQuery();
 
@@ -155,16 +200,16 @@ namespace Web_Contact_Information_V2.Server.DataAccess
                     else
                     {
 
-                        statement =
-                            "INSERT INTO Contacts(Name, Phone, Fax, eMail, Notes, LastUpdateDate, LastUpdateUserName) " +
-                            "VALUES (@Name, @Phone, @Fax, @eMail, @Notes, @LastUpdateDate, @LastUpdateUserName)";
+                        var statement =
+                             "INSERT INTO Contacts(Name, Phone, Fax, eMail, Notes, LastUpdateDate, LastUpdateUserName) " +
+                             "VALUES (@Name, @Phone, @Fax, @eMail, @Notes, @LastUpdateDate, @LastUpdateUserName)";
                         using var command = new SqlCommand(statement, connection);
-                        command.Parameters.AddWithValue("@Name", request.Name);
-                        command.Parameters.AddWithValue("@Phone", request.Phone);
-                        command.Parameters.AddWithValue("@Fax", (request.Fax == null) ? DBNull.Value : request.Fax);
-                        command.Parameters.AddWithValue("@eMail", (request.eMail == null) ? DBNull.Value : request.eMail);
-                        command.Parameters.AddWithValue("@Notes", (request.Notes == null) ? DBNull.Value : request.Notes);
-                        command.Parameters.AddWithValue("@LastUpdateDate", request.LastUpdateDate);
+                        command.Parameters.AddWithValue("@Name", contact.Name);
+                        command.Parameters.AddWithValue("@Phone", contact.Phone);
+                        command.Parameters.AddWithValue("@Fax", (contact.Fax == null) ? DBNull.Value : contact.Fax);
+                        command.Parameters.AddWithValue("@eMail", (contact.eMail == null) ? DBNull.Value : contact.eMail);
+                        command.Parameters.AddWithValue("@Notes", (contact.Notes == null) ? DBNull.Value : contact.Notes);
+                        command.Parameters.AddWithValue("@LastUpdateDate", contact.LastUpdateDate);
                         command.Parameters.AddWithValue("@LastUpdateUserName", username);
                         command.ExecuteNonQuery();
                     }
@@ -181,7 +226,42 @@ namespace Web_Contact_Information_V2.Server.DataAccess
             }
         }
 
-        public bool ResetContacts(List<Contact> contacts)           
+        /// <summary>
+        /// Updates the existing contact using its contact Id
+        /// </summary>
+        /// <param name="request">The contact requested to be updated </param>
+        /// <returns>True if contact was successfully updated; otherwise, false.</returns>
+        public bool UpdateContact(UpdateContactRequest request)
+        {
+            var statement =
+                "UPDATE Contacts " +
+                "SET Name = @NewName, Phone = @NewPhone, Fax = @NewFax, eMail = @NeweMail, Notes = @NewNotes, LastUpdateDate = GETDATE(), LastUpdateUserName = @NewLastUpdateUserName " +
+                "WHERE ContactID = @ContactID";
+
+            using var connection = new SqlConnection(_connectionString);
+            using var command = new SqlCommand(statement, connection);
+
+            command.Parameters.AddWithValue("@ContactID", request.ContactID);
+            command.Parameters.AddWithValue("@NewName", request.Name);
+            command.Parameters.AddWithValue("@NewPhone", request.Phone);
+            command.Parameters.AddWithValue("@NewFax", (request.Fax == null) ? DBNull.Value : request.Fax);
+            command.Parameters.AddWithValue("@NeweMail", (request.eMail == null) ? DBNull.Value : request.eMail);
+            command.Parameters.AddWithValue("@NewNotes", (request.Notes == null) ? DBNull.Value : request.Notes);
+            command.Parameters.AddWithValue("@NewLastUpdateUserName", request.User);
+
+            connection.Open();
+            var rowCount = command.ExecuteNonQuery();
+            return rowCount > 0;
+        }
+
+        /// <summary>
+        /// Resets all Contacts in the database.
+        /// It deletes all the contacts and recreates them using a given 
+        /// contact list. The original Contact Id values are preserved.
+        /// </summary>
+        /// <param name="contacts">The contact list that will rerplace the database contents</param>
+        /// <returns>True when the reset operation completes successfully.</returns>
+        public bool ResetContacts(List<Contact> contacts)
         {
             var statement =
               "DELETE FROM Contacts; " +
@@ -227,37 +307,8 @@ namespace Web_Contact_Information_V2.Server.DataAccess
             catch (Exception ex)
             {
                 Console.WriteLine($"Database operation failed: {ex.Message}");
-                throw ex;
-
-
+                throw;
             }
-
         }
-
-
-        public bool UpdateContact(UpdateContactRequest request, string username)
-        {
-            var statement =
-                "UPDATE Contacts " +
-                "SET Name = @NewName, Phone = @NewPhone, Fax = @NewFax, eMail = @NeweMail, Notes = @NewNotes, LastUpdateDate = GETDATE(), LastUpdateUserName = @NewLastUpdateUserName " +
-                "WHERE ContactID = @ContactID";
-
-            using var connection = new SqlConnection(_connectionString);
-            using var command = new SqlCommand(statement, connection);
-
-            command.Parameters.AddWithValue("@ContactID", request.ContactID);
-            command.Parameters.AddWithValue("@NewName", request.Name);
-            command.Parameters.AddWithValue("@NewPhone", request.Phone);
-            command.Parameters.AddWithValue("@NewFax", (request.Fax == null) ? DBNull.Value : request.Fax);
-            command.Parameters.AddWithValue("@NeweMail", (request.eMail == null) ? DBNull.Value : request.eMail);
-            command.Parameters.AddWithValue("@NewNotes", (request.Notes == null) ? DBNull.Value : request.Notes);
-            command.Parameters.AddWithValue("@NewLastUpdateUserName", username);
-
-            connection.Open();
-            var rowCount = command.ExecuteNonQuery();
-            return rowCount > 0;
-        }
-
-        //TODO: Add delete when all works
     }
 }
