@@ -56,18 +56,16 @@ function App() {
         const year = date.substring(0, 4);
         const month = date.substring(5, 7);
         const day = date.substring(8, 10);
-
         const minutes = date.substring(14, 16);
-
         let hourInt = parseInt(date.substring(11, 13) - 4);  // subtract 4 to convert UTC to Puerto Rico time.
-        if (hourInt < 0) hourInt += 24; //This approach may make it negative so we add 24 to compensate.
 
-        hourInt = hourInt % 12; //Handle military time
-        if (hourInt === 0) hourInt = 12;
+        if (hourInt < 0) hourInt += 24; //This approach may make it negative so we add 24 to compensate.
 
         const period = hourInt >= 12 ? "pm" : "am";
 
-         
+        hourInt = hourInt % 12; //Handle military time
+        
+        if (hourInt === 0) hourInt = 12;
 
         const hours = String(hourInt).padStart(2, "0");
 
@@ -239,40 +237,6 @@ function App() {
         return fields;
 
     }
-
-    /*
-     function parseCSVRow(row) {
-        const fields = [];
-
-        
-        let currentField = "";
-        let insideQuotes = false; 
-        //Since the supplied CSV contained "Comment, Comment" in the notes field,
-        //we have to analyze the row character by character and inspect if 
-        //we are inside quotes to ignore the commas inside.
-
-        for (let i = 0; i < row.length; i++) {
-            const character = row[i];
-            
-            if (character === '"') { 
-                insideQuotes = !insideQuotes;
-            }
-            else if (character === "," && !insideQuotes) {
-                fields.push(currentField);
-                currentField = "";
-            }
-            else {
-                currentField += character;
-            }
-        }
-
-        fields.push(currentField);
-
-        return fields;
-    }
-
-
-    */
 
 
     //Creates the contact with the parsed fields

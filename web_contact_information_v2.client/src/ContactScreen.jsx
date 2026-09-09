@@ -216,5 +216,4 @@ function ContactScreen({ contact, username, onUpdated, onCancel }) {
 
 }
 
-
 export default ContactScreen;
