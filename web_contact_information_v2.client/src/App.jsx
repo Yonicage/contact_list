@@ -1,17 +1,25 @@
-﻿import { useEffect, useState } from 'react';
+﻿/*
+* File: App.jsx
+* Author: Yoniel Ruiz Alfaro
+* Date: 09/02/2026
+* Purpose: This react jsx file represents the main screen for the application.
+* It shows the login and main contacts screen.
+*/
+
+import { useEffect, useState } from 'react';
 import './App.css';
 import ContactScreen from "./ContactScreen";
 
 function App() {
-    const [username, setUsername] = useState("");
-    const [error, setError] = useState();
-    const [loggedIn, setLoggedIn] = useState(false);
-    const [contacts, setContacts] = useState([]);   
-    const [filter, setFilter] = useState("");
-    const [selectedContact, setSelectedContact] = useState(null);
-    const [message, setMessage] = useState("");
+    const [username, setUsername] = useState("");                  //Username of the user
+    const [error, setError] = useState();                          //Handles error display
+    const [loggedIn, setLoggedIn] = useState(false);               //Verifies if the user is logged in
+    const [contacts, setContacts] = useState([]);                  //List of contacts, stores all contacts
+    const [filter, setFilter] = useState("");                      //The filter used to search 
+    const [selectedContact, setSelectedContact] = useState(null);  //The current selected contact to edit/update
+    const [message, setMessage] = useState("");                    //Message that confirms if the contact has been edited/updated
 
-
+    //Loads all contacts once when the page initially loads.
     useEffect(() => {
         fetch(`${import.meta.env.VITE_API_URL}/api/Contact`)
             .then(response => response.json())
@@ -20,6 +28,9 @@ function App() {
             });
     },[]);
 
+
+    //Verifies that the user has logged in. If it is true 
+    //loads the main screen, else it shows the login screen.
     function handleLogin() {
         const trimmedUsername = username.trim();
 
@@ -33,37 +44,39 @@ function App() {
     }
 
 
-
+    //Formats the number with a mask 777777777 ->(777) 777-7777
     function formatNumber(number) {
         if (!number) return "";
         
         return `(${number.substring(0,3)}) ${number.substring(3, 6)}-${number.substring(6)}`;
     }
 
+    //Formats the date 2026-07-17T09:15:23 -> mm/dd/yyyy hh:mm pp
     function formatDate(date) {
-        const d = new Date(date)
+        const year = date.substring(0, 4);
+        const month = date.substring(5, 7);
+        const day = date.substring(8, 10);
 
-        // Convert UTC to Puerto Rico time
-        d.setHours(d.getHours() - 4);
+        const minutes = date.substring(14, 16);
 
-        const day = String(d.getDate()).padStart(2, "0");
-        const month = String(d.getMonth() + 1).padStart(2, "0")
-        const year = d.getFullYear();
+        let hourInt = parseInt(date.substring(11, 13) - 4);  // subtract 4 to convert UTC to Puerto Rico time.
+        if (hourInt < 0) hourInt += 24; //This approach may make it negative so we add 24 to compensate.
 
-        let hours = d.getHours();
-        const minutes = String(d.getMinutes()).padStart(2, "0");
+        hourInt = hourInt % 12; //Handle military time
+        if (hourInt === 0) hourInt = 12;
 
-        const period = hours >= 12 ? "PM" : "AM";
+        const period = hourInt >= 12 ? "pm" : "am";
 
-        hours = hours % 12; //handling military hour
-        if (hours === 0) hours = 12;
+         
 
-        hours = String(hours).padStart(2, "0");
+        const hours = String(hourInt).padStart(2, "0");
 
-        return `${day}/${month}/${year} ${hours}:${minutes} ${period}`
+        return `${day}/${month}/${year} ${hours}:${minutes} ${period}`;
 
     }
 
+    //Gets the contacts when pressing search button according to the present filter, if filter
+    //is empty it gets all of the contacts.
     function getContacts() {
         fetch(`${import.meta.env.VITE_API_URL}/api/Contact?filter=${encodeURIComponent(filter)}`)
             .then(response => response.json())
@@ -72,15 +85,21 @@ function App() {
             });
     }
 
+    //When view link is pressed It sets the current selected contact
+    //from the table.
     function handleView(contact) {
         setSelectedContact(contact);
 
     }
+
+    //When exit link is pressed it sets login as "False" and 
+    //sets the username to empty.
     function handleExit() {
         setLoggedIn(false);
         setUsername("");
     }
 
+    //exports the loaded contact table to a xml file
     function exportXML() {
         const xml = document.implementation.createDocument("", "Contacts");
 
@@ -136,10 +155,14 @@ function App() {
         URL.revokeObjectURL(url);
     }
 
+
+    //Handles the import of a CSV file
+    //Refresh contact table when imported
     function handleCSVImport(event) {
         const file = event.target.files[0];
         const importedContacts = [];
         if (!file) {
+            alert("Unable to process file: File is not present");
             return;
         }
 
@@ -147,11 +170,8 @@ function App() {
         reader.onload = function (e) {
             const csvText = e.target.result;
             const rows = csvText.split(/\r?\n/);
-            for (let i = 1; i<rows.length; i++) {
-                if (rows[i].trim() === "") {
-                    continue;//empty fields
-                }
-
+            for (let i = 1; i < rows.length; i++) { // Start at index 1 to skip the CSV header row
+               
                 const fields = parseCSVRow(rows[i]);
                 const contact = createContact(fields);
 
@@ -190,31 +210,51 @@ function App() {
         reader.readAsText(file);
     }
 
-    function createContact(fields) {
-        const dateParts = fields[5].split(" ");
-        const timeParts = dateParts[1].split(":");
-
-        const formattedDate =
-            `${dateParts[0]}T${timeParts[0].padStart(2, "0")}:${timeParts[1]}:${timeParts[2]}`;
-        return {
-            name: fields[0],
-            phone: fields[1],
-            fax: fields[2],
-            eMail: fields[3],
-            notes: fields[4],
-            lastUpdateDate: formattedDate
-        };
-    }
-
+    //Parses one row from the supplied CSV file
     function parseCSVRow(row) {
         const fields = [];
+        const allFields = row.split(",")
+        let notesField = "";
+        const lastField = allFields[allFields.length - 1]; 
+
+        for (let i = 0; i < 4; i++) { //parse first 4 values (Name, Phone, Fax, email)
+            const currentField = allFields[i];
+            fields.push(currentField)
+        }
+
+        let commentBeginning = true;
+
+        for (let i = 4; i < (allFields.length - 1); i++) { //parse the rest minus the last value (Notes)
+            if (commentBeginning === true) {
+                notesField += allFields[i];
+                commentBeginning = false;
+            } else {
+                notesField += ","+ allFields[i];
+            }
+           
+        }
+        notesField = notesField.replace(/"/g, ""); //Remove all quotes from the notes
+        fields.push(notesField);
+        fields.push(lastField); //parse last value (Last Update Date)
+        return fields;
+
+    }
+
+    /*
+     function parseCSVRow(row) {
+        const fields = [];
+
+        
         let currentField = "";
-        let insideQuotes = false;
+        let insideQuotes = false; 
+        //Since the supplied CSV contained "Comment, Comment" in the notes field,
+        //we have to analyze the row character by character and inspect if 
+        //we are inside quotes to ignore the commas inside.
 
         for (let i = 0; i < row.length; i++) {
             const character = row[i];
-
-            if (character === '"') {
+            
+            if (character === '"') { 
                 insideQuotes = !insideQuotes;
             }
             else if (character === "," && !insideQuotes) {
@@ -231,11 +271,36 @@ function App() {
         return fields;
     }
 
+
+    */
+
+
+    //Creates the contact with the parsed fields
+    //Maps each field to the contact property
+    //Formats the date: 2026-07-18 8:30:00 -> 2026-07-17T08:30:00
+    function createContact(fields) {
+        const dateParts = fields[5].split(" ");
+        const timeParts = dateParts[1].split(":");
+
+        const formattedDate =
+            `${dateParts[0]}T${timeParts[0].padStart(2, "0")}:${timeParts[1]}:${timeParts[2]}`;
+        return {
+            name: fields[0],
+            phone: fields[1],
+            fax: fields[2],
+            eMail: fields[3],
+            notes: fields[4],
+            lastUpdateDate: formattedDate
+        };
+    }
+
+    
+
+    //Handles the Main content screen. Only shows if user is logged in.
+    //When a user is selected via the view link, the contact screen pops up.
     if (loggedIn) {
 
-
         return (
-            
             
             <div className="main-screen">
                 <div className="top-section">
@@ -264,10 +329,7 @@ function App() {
                         <a href="#" onClick={exportXML}>Export</a>
                         <a href="#" onClick={() => document.getElementById("csvFileInput").click()}>Import</a>
                         <a href="#" onClick={() => setSelectedContact({})}>+ Add New</a>
-
                     </div>
-
-
                 </div>   
              
                 <input
@@ -281,7 +343,8 @@ function App() {
                     <h5>Search Results</h5>
                     <hr />
                 </div>
-               
+
+                {/* If there is a message to display show it, otherwise don't */}
                 {message && (
                     <div className="action-message">
                         {message}
@@ -314,6 +377,8 @@ function App() {
                         ))}
                     </tbody>
                 </table>
+
+                {/* If a contact is selected, show the contact screen. */}
                 {selectedContact && (
                     <ContactScreen
                         contact={selectedContact}
@@ -338,8 +403,8 @@ function App() {
         )
     }
 
-    //Entry Point of our Front End
-
+    
+    //Entry point: Login Screen
     return (
         <div className="login-screen">
             <div className="login-box">
@@ -356,11 +421,7 @@ function App() {
                 <p>{error}</p>
 
             </div>
-          
-            
         </div>
     );
-    
 }
-
 export default App;
