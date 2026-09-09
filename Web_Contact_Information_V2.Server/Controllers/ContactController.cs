@@ -51,7 +51,7 @@ namespace Web_Contact_Information_V2.Server.Controllers
         /// </summary>
         /// <returns>A list of contacts, or an HTTP 500 response if server error occurs.</returns>
         [HttpGet]
-        public ActionResult<List<Contact>> Get(string? filter)
+        public ActionResult<List<Contact>> Get()
         {
             try
             {
