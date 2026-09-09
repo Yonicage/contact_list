@@ -45,29 +45,40 @@ namespace Web_Contact_Information_V2.Server.Controllers
             _environment = environment;
 
         }
+
+        /// <summary>
+        /// Retrieves all contacts.
+        /// </summary>
+        /// <returns>A list of contacts, or an HTTP 500 response if server error occurs.</returns>
+        [HttpGet]
+        public ActionResult<List<Contact>> Get(string? filter)
+        {
+            try
+            {
+                    var contactList = _contactDA.GetContacts();
+                    return contactList;
+
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, ex.Message);
+            }
+        }
+
         /// <summary>
         /// Retrieves all contacts or filters contacts by name when a filter is provided.
         /// </summary>
         /// <param name="filter">An optional name filter used to search for contacts.</param>
         /// <returns>A list of contacts, or an HTTP 500 response if server error occurs.</returns>
         [HttpGet]
-        public ActionResult<List<Contact>> Get(string? filter)
+        public ActionResult<List<Contact>> GetFilter(string? filter)
         {
 
             try
             {
-                if (string.IsNullOrWhiteSpace(filter))
-                {
-                    var contactList = _contactDA.GetContacts();
-                    return contactList;
-
-
-                }
-                else
-                {
                     var contactList = _contactDA.FilterGetContact(filter);
                     return contactList;
-                }
+               
 
             }
             catch (Exception ex)
